@@ -1,0 +1,13 @@
+tasks:
+  - name: all
+    actions:
+      - task: ingress
+
+  - name: ingress
+    actions:
+      - description: Renovate Ingress Health Check
+        wait:
+          network:
+            protocol: https
+            address: renovate.uds.dev
+            code: 200

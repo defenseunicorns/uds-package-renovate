@@ -1,0 +1,19 @@
+renovate:
+  # TODO (@EWYLES) -- just putting something here for now, need to figure out real config
+  config: |
+    {
+      "platform": "gitlab",
+      "endpoint": "https://gitlab.example.com/api/v4",
+      "token": "your-gitlab-renovate-user-token",
+      "autodiscover": "false",
+      "dryRun": true,
+      "printConfig": true,
+      "repositories": ["username/repo", "orgname/repo"]
+    }
+
+cronjob:
+  schedule: "*/5 * * * *"
+
+serviceAccount:
+  create: true
+  annotations: {}

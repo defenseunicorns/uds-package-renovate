@@ -1,0 +1,7 @@
+tasks:
+  - name: create
+    description: Create the Dependency Zarf Package
+    actions:
+      - cmd: "echo TODO [@EWYLES] put these in as we need them or take this out"
+      # - cmd: uds zarf package create src/dev-secrets/ --confirm --no-progress --architecture=${UDS_ARCH}
+      # - cmd: uds zarf package create src/namespace/ --confirm --no-progress --architecture=${UDS_ARCH}

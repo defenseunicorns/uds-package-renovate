@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: renovate-common
+  description: "UDS Renovate Common Package"
+
+components:
+  - name: renovate
+    required: true
+    charts:
+      # - name: uds-renovate-config
+      #   namespace: renovate
+      #   version: 0.1.0
+      #   localPath: ../chart
+      #   valuesFiles:
+      #     - ../values/config-values.yaml
+      - name: renovate
+        namespace: renovate
+        url: https://github.com/renovatebot/helm-charts.git
+        gitPath: charts/renovate
+        version: renovate-38.67.2
+        valuesFiles:
+          - ../values/common-values.yaml
+    actions:
+      onDeploy:
+        after:
+          - description: Validate Renovate CronJob Exists
+            maxTotalSeconds: 300
+            wait:
+              cluster:
+                kind: CronJob
+                name: renovate
+                namespace: renovate
