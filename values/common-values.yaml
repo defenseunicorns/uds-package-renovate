@@ -2,17 +2,17 @@ renovate:
   # TODO (@EWYLES) -- just putting something here for now, need to figure out real config
   config: |
     {
-      "platform": "gitlab",
-      "endpoint": "https://gitlab.example.com/api/v4",
-      "token": "your-gitlab-renovate-user-token",
-      "autodiscover": "false",
-      "dryRun": true,
-      "printConfig": true,
-      "repositories": ["username/repo", "orgname/repo"]
+      "printConfig": true
     }
 
-cronjob:
-  schedule: "*/5 * * * *"
+# cronjob:
+#   schedule: "0 * * * *"
+
+envFrom:
+  - secretRef:
+      name: renovate-gitlab-token
+  - secretRef:
+      name: renovate-env
 
 serviceAccount:
   create: true

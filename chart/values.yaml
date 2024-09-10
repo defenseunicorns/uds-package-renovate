@@ -1,0 +1,33 @@
+domain: "###ZARF_VAR_DOMAIN###"
+
+gitlab:
+  existingSecret:
+    name: gitlab-token
+    namespace: gitlab
+    tokenKey: TOKEN
+
+# Additional environment variables for Renovate
+extraEnv:
+  LOG_LEVEL: "debug"
+  RENOVATE_PLATFORM: "gitlab"
+  RENOVATE_ENDPOINT: "https://gitlab.uds.dev/api/v4"
+  RENOVATE_AUTODISCOVER: "true"
+  RENOVATE_DRYRUN: "false"
+  RENOVATE_PRINTCONFIG: "true"
+
+# custom:
+#    # Notice no `remoteGenerated` field here on custom internal rule
+#   - direction: Ingress
+#     selector:
+#       app: jenkins
+#     remoteNamespace: jenkins
+#     remoteSelector:
+#       app: jenkins
+#     port: 8180
+#     description: "Ingress from Jenkins"
+#   # No `remoteNamespace`, `remoteSelector`, or `port` fields on rule to `remoteGenerated`
+#   - direction: Egress
+#     selector:
+#       app: webservice
+#     remoteGenerated: Anywhere
+#     description: "Egress from Mattermost"

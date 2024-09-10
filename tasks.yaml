@@ -14,7 +14,17 @@ tasks:
     actions:
       - task: create-renovate-test-bundle
       - task: setup:k3d-test-cluster
+      - task: dependencies:deploy
+      - task: create-gitlab-token
       - task: deploy:test-bundle
+      - task: test:all
+
+  - name: create-gitlab-token
+    actions:
+      - cmd: |
+          TOOLBOX_POD_NAME=$(kubectl get pods -n gitlab -l app=toolbox -o jsonpath='{.items[0].metadata.name}')
+          TOKEN_TEXT=$(./uds zarf tools kubectl --namespace gitlab exec -i $TOOLBOX_POD_NAME -- gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: ['api', 'write_repository'], name: 'Root Test Token ${nowMillis}', expires_at: 1.days.from_now); token.save!; puts token.token")
+          kubectl create secret generic gitlab-token --namespace gitlab --from-literal=TOKEN=$TOKEN_TEXT --dry-run=client -o yaml | kubectl apply -f -
 
   - name: create-renovate-package
     description: Create the Renovate package
@@ -33,8 +43,19 @@ tasks:
   - name: dev
     description: Create and deploy the bundle on an existing cluster (for iteration/dev speed)
     actions:
+      - cmd: kubectl delete namespace renovate || exit 0
       - task: create-renovate-test-bundle
+      #- task: gitlab-token
       - task: deploy:test-bundle
+      - task: test:all
+
+  - name: gitlab-token
+    description: Print a gitlab token
+    actions:
+      #- task: setup:create-doug-user
+      - description: Print a gitlab token
+        dir: tests
+        cmd: npm test -- journey/pipeline-run.test.ts -t 'create a token'
 
 # CI will execute the following (via uds-common/.github/actions/test) so they need to be here with these names
 

@@ -8,12 +8,10 @@ components:
   - name: renovate
     required: true
     charts:
-      # - name: uds-renovate-config
-      #   namespace: renovate
-      #   version: 0.1.0
-      #   localPath: ../chart
-      #   valuesFiles:
-      #     - ../values/config-values.yaml
+      - name: uds-renovate-config
+        namespace: renovate
+        version: 0.1.0
+        localPath: ../chart
       - name: renovate
         namespace: renovate
         url: https://github.com/renovatebot/helm-charts.git

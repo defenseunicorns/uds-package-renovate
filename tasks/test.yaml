@@ -1,13 +1,9 @@
 tasks:
   - name: all
     actions:
-      - task: ingress
+      - task: cronjob
 
-  - name: ingress
+  - name: cronjob
     actions:
-      - description: Renovate Ingress Health Check
-        wait:
-          network:
-            protocol: https
-            address: renovate.uds.dev
-            code: 200
+      - description: "execute job from cronjob"
+      - cmd: uds zarf tools kubectl create job --from=cronjob/renovate renovate-manual-run -n renovate

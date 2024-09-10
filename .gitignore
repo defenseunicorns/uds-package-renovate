@@ -6,6 +6,9 @@ build/
 *.tar.zst
 zarf-sbom
 
+**node_modules
+**coverage
+
 # Tests
 downloaded_attestation.json
 response.json
