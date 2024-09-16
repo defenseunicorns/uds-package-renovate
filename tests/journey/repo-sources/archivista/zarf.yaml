@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: archivista
+  description: "A deployment of Archivista, an application for storing in-toto attestations."
+  # x-release-please-start-version
+  version: "0.5.3-uds.4"
+  # x-release-please-end
+
+variables:
+  - name: DB_PASSWORD
+    description: "Database Password for Archivista"
+  - name: ACCESS_KEY
+    description: "Access Key for S3 compatible storage"
+  - name: SECRET_KEY
+    description: "Secret Key for S3 compatible storage"
+
+components:
+  - name: archivista
+    required: true
+    description: "Deploy Archivista"
+    import:
+      path: common
+    only:
+      flavor: upstream
+    charts:
+      - name: uds-archivista-config
+        namespace: archivista
+        version: 0.1.0
+        localPath: ../chart
+      - name: archivista
+        namespace: archivista
+        url: https://github.com/in-toto/archivista.git
+        gitPath: chart
+        version: v0.5.4
+    images:
+      - ghcr.io/in-toto/archivista:0.5.2

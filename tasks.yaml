@@ -64,4 +64,7 @@ tasks:
     actions:
       - task: create-renovate-test-bundle
       - task: setup:k3d-test-cluster
+      - task: dependencies:deploy
+      - task: create-gitlab-token
       - task: deploy:test-bundle
+      - task: test:all
