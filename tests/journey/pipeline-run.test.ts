@@ -16,46 +16,36 @@ test('upload archivista', async () => {
 }, 90000);
 
 async function executeTest(sourceRepoName: string, expectedJobLogOutputs: string[], expectedStatus: string) {
+    const user = 'doug'
     const nowMillis = Date.now()
-    const tokenName = `if-you-see-me-in-production-something-is-horribly-wrong-${nowMillis}`    
-    
     var sourceDir = path.join(__dirname, 'repo-sources', sourceRepoName)
 
-    // Get the toolbox pod and add a token to the root GitLab user
-    await createToken(tokenName, nowMillis)
-    const headers: HeadersInit = [["PRIVATE-TOKEN", tokenName]]
+    const token = await getToken(user);
+    console.log(`Using token [${token}] for user [${user}]`)
+    const headers: HeadersInit = [["PRIVATE-TOKEN", token]]
 
     const gitLabProjectName = `${sourceRepoName}-${nowMillis}`
-    const projectId = await createNewGitlabProject(sourceDir, tokenName, gitLabProjectName, headers)
-    
-    //await unprotectRunner(headers, tokenName)
-
-    // Check that the pipeline ran as expected
-    //await checkJobResults(projectId, headers, expectedJobLogOutputs, expectedStatus)
+    const projectId = await createNewGitlabProject(sourceDir, user, token, gitLabProjectName, headers)
 }
 
-
-async function createToken(tokenName: string, nowMillis: number) {
-    const toolboxPods = await K8s(kind.Pod).InNamespace("gitlab").WithLabel("app", "toolbox").Get()
-    const toolboxPod = toolboxPods.items.at(0)
-    zarfExec(["tools",
-        "kubectl",
-        "--namespace", "gitlab",
-        "exec",
-        "-i",
-        toolboxPod?.metadata?.name!,
-        "--",
-        `gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: ['api', 'admin_mode', 'read_repository', 'write_repository'], name: 'Root Test Token ${nowMillis}', expires_at: 1.days.from_now); token.set_token('${tokenName}'); token.save!"`
-    ]);
+async function getToken(user: string) : Promise<string> {
+    const secret = await K8s(kind.Secret).InNamespace('gitlab').Get(`gitlab-token-${user}`);
+    if (secret.data) {
+        return atob(secret.data['TOKEN'])
+    } else {
+        return "";
+    }
 }
 
-async function createNewGitlabProject(sourceDir: string, tokenName: string, gitLabProjectName: string, headers: HeadersInit) {
+async function createNewGitlabProject(sourceDir: string, user: string, tokenName: string, gitLabProjectName: string, headers: HeadersInit) {
     await deleteDirectory(path.join(sourceDir, '.git')) 
     execSync('git init', { cwd: sourceDir })
     execSync('git add . ', { cwd: sourceDir })
     execSync('git config commit.gpgsign false', { cwd: sourceDir }) // need this so that gpg signing doesn't attempt to happen locally when running tests
+    execSync('git config user.name "Doug Unicorn"', { cwd: sourceDir })
+    execSync('git config user.email "doug@uds.dev"', { cwd: sourceDir })
     execSync('git commit -m "Initial commit" ', { cwd: sourceDir })
-    execSync(`git remote add origin https://root:${tokenName}@gitlab${domainSuffix}/root/${gitLabProjectName}.git`, { cwd: sourceDir })
+    execSync(`git remote add origin https://${user}:${tokenName}@gitlab${domainSuffix}/defenseunicorns/${gitLabProjectName}.git`, { cwd: sourceDir })
     execSync('git push -u origin --all', { cwd: sourceDir })
     await deleteDirectory(path.join(sourceDir, '.git'))
 
@@ -67,44 +57,6 @@ async function createNewGitlabProject(sourceDir: string, tokenName: string, gitL
     const projectId = project?.id
     console.log(`Found project id [${projectId}]`)
     return projectId
-}
-
-async function unprotectRunner(headers: HeadersInit, tokenName: string) {
-    const runnerIDResp = await (await fetch(`https://gitlab${domainSuffix}/api/v4/runners/all`, { headers })).json()
-    const runnerID = runnerIDResp[0].id
-    const runnerResp = await fetch(`https://gitlab${domainSuffix}/api/v4/runners/${runnerID}`, {
-        headers: [
-            ["PRIVATE-TOKEN", tokenName],
-            ["Content-Type", "application/x-www-form-urlencoded"]
-        ],
-        body: "access_level=not_protected",
-        method: "put"
-    });
-    expect(runnerResp.status).toBe(200)
-}
-
-async function checkJobResults(projectId: any, headers: HeadersInit, expectedJobLogOutputs: string[], expectedStatus: string) {
-    let status = await retry(async () => {
-        const jobIDResp = await (await fetch(`https://gitlab${domainSuffix}/api/v4/projects/${projectId}/jobs`, { headers })).json()
-
-        // Print the job response (useful for debugging)
-        console.log(jobIDResp)
-
-        if (jobIDResp.length > 0 && (jobIDResp[0].status === "success" || jobIDResp[0].status === "failed")) {
-            const jobID = jobIDResp[0].id;
-            const jobLog = await (await fetch(`https://gitlab${domainSuffix}/api/v4/projects/${projectId}/jobs/${jobID}/trace`, { headers })).text()
-
-            // Print the job log (useful for debugging)
-            console.log(jobLog)
-
-            expectedJobLogOutputs.forEach( expectedOutput => {
-                expect(jobLog).toContain(expectedOutput)
-            });
-            return jobIDResp[0].status
-        }
-        return false
-    }, 7, 7000);
-    expect(status).toBe(expectedStatus)
 }
 
 async function deleteDirectory(path: string) {
