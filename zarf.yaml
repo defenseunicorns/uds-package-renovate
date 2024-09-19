@@ -10,6 +10,8 @@ metadata:
 variables:
   - name: DOMAIN
     default: "uds.dev"
+  - name: RENOVATE_SCHEDULE
+    default: "*/5 * * * *"
 
 components:
   - name: renovate

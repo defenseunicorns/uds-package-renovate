@@ -1,16 +1,14 @@
 renovate:
-  # TODO (@EWYLES) -- just putting something here for now, need to figure out real config
+  # This is a small starter config.json, the environment variables from renovate-env will get combined with this
   config: |
     {
       "printConfig": true
     }
 
-# cronjob:
-#   schedule: "0 * * * *"
+cronjob:
+  schedule: "###ZARF_VAR_RENOVATE_SCHEDULE###"
 
 envFrom:
-  - secretRef:
-      name: renovate-gitlab-token
   - secretRef:
       name: renovate-env
 

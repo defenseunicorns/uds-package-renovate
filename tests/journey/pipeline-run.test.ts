@@ -26,6 +26,31 @@ async function executeTest(sourceRepoName: string, expectedJobLogOutputs: string
 
     const gitLabProjectName = `${sourceRepoName}-${nowMillis}`
     const projectId = await createNewGitlabProject(sourceDir, user, token, gitLabProjectName, headers)
+    await inviteRenovateBotToProject(headers, projectId, token);
+
+    const gitLabProjectName2 = `${sourceRepoName}-${nowMillis}-2`
+    const secondProjectId = await createNewGitlabProject(sourceDir, user, token, gitLabProjectName2, headers)
+}
+
+async function inviteRenovateBotToProject(headers: HeadersInit, projectId: any, token: string) {
+    const userResp = await fetch(`https://gitlab${domainSuffix}/api/v4/users?username=renovatebot`, { headers });
+    const userJson = await userResp.json();
+
+    const renovateUserId = userJson[0]?.id
+
+    const response = await fetch(`https://gitlab${domainSuffix}/api/v4/projects/${projectId}/members`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'PRIVATE-TOKEN': token,
+        },
+        body: JSON.stringify({
+            user_id: renovateUserId,
+            access_level: 30, // Developer access level
+        }),
+    });
+
+    console.log(response);
 }
 
 async function getToken(user: string) : Promise<string> {
@@ -45,7 +70,7 @@ async function createNewGitlabProject(sourceDir: string, user: string, tokenName
     execSync('git config user.name "Doug Unicorn"', { cwd: sourceDir })
     execSync('git config user.email "doug@uds.dev"', { cwd: sourceDir })
     execSync('git commit -m "Initial commit" ', { cwd: sourceDir })
-    execSync(`git remote add origin https://${user}:${tokenName}@gitlab${domainSuffix}/defenseunicorns/${gitLabProjectName}.git`, { cwd: sourceDir })
+    execSync(`git remote add origin https://${user}:${tokenName}@gitlab${domainSuffix}/${user}/${gitLabProjectName}.git`, { cwd: sourceDir })
     execSync('git push -u origin --all', { cwd: sourceDir })
     await deleteDirectory(path.join(sourceDir, '.git'))
 

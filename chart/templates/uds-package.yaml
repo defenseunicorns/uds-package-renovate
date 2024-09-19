@@ -6,10 +6,6 @@ metadata:
 spec:
   network:
     allow:
-      # Permit intra-namespace communication for job communications
-      - direction: Ingress
-        remoteGenerated: Anywhere
-
       - direction: Egress
         remoteGenerated: Anywhere
 

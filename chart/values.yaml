@@ -1,17 +1,20 @@
 domain: "###ZARF_VAR_DOMAIN###"
 
-gitlab:
-  existingSecret:
-    name: gitlab-token-root
-    namespace: gitlab
-    tokenKey: TOKEN
+renovate:
+  logLevel: "info"
+  printconfig: "true"
+  platform: "gitlab"
+  endpoint: "https://gitlab.uds.dev/api/v4" #todo substitute domain here
+  autodiscover: "true"
+  onboarding: "false" #todo default to on
 
-# Additional environment variables for Renovate
-extraEnv:
-  LOG_LEVEL: "debug"
-  RENOVATE_PLATFORM: "gitlab"
-  RENOVATE_ENDPOINT: "https://gitlab.uds.dev/api/v4"
-  RENOVATE_AUTODISCOVER: "true"
-  RENOVATE_DRYRUN: "false"
-  RENOVATE_PRINTCONFIG: "true"
-  RENOVATE_ONBOARDING: "false"
+  # Additional environment variables for Renovate (see: https://docs.renovatebot.com/self-hosted-configuration/)
+  extraEnv: {}
+
+  gitlabToken:
+    # value will be used directly if given, else the value will be looked up from existing secret as specified in fromExistingSecret
+    #value: ""
+    fromExistingSecret:
+      name: gitlab-token-renovate
+      namespace: gitlab
+      tokenKey: TOKEN
