@@ -1,12 +1,12 @@
 domain: "###ZARF_VAR_DOMAIN###"
 
 renovate:
-  logLevel: "info"
+  logLevel: "debug"
   printconfig: "true"
   platform: "gitlab"
-  endpoint: "https://gitlab.uds.dev/api/v4" #todo substitute domain here
+  endpoint: "https://gitlab.###ZARF_VAR_DOMAIN###/api/v4" #todo substitute domain here
   autodiscover: "true"
-  onboarding: "false" #todo default to on
+  onboarding: "true"
 
   # Additional environment variables for Renovate (see: https://docs.renovatebot.com/self-hosted-configuration/)
   extraEnv: {}
