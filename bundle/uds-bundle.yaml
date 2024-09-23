@@ -12,3 +12,31 @@ packages:
     # x-release-please-start-version
     ref: 38.67.2-uds.0
     # x-release-please-end
+
+  - name: valkey
+    repository: ghcr.io/defenseunicorns/packages/uds/valkey
+    ref: 7.2.6-uds.0-upstream
+    overrides:
+      valkey:
+        uds-valkey-config:
+          values:
+            - path: custom
+              value:
+                - direction: Ingress
+                  selector:
+                    app.kubernetes.io/name: valkey
+                  remoteNamespace: gitlab
+                  port: 6379
+                  description: "Ingress from GitLab"
+                - direction: Ingress
+                  selector:
+                    app.kubernetes.io/name: valkey
+                  remoteNamespace: renovate
+                  port: 6379
+                  description: "Ingress from Renovate"
+            - path: copyPassword
+              value:
+                enabled: true
+                namespace: gitlab
+                secretName: gitlab-redis
+                secretKey: password

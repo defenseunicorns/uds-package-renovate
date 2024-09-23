@@ -2,15 +2,9 @@ tasks:
   - name: all
     actions:
       - task: make-repos
-      #- task: cronjob
 
   - name: make-repos
     description: Push repos to gitlab
     actions:
       - dir: tests
         cmd: npm test -- journey/pipeline-run.test.ts
-
-  # - name: cronjob
-  #   actions:
-  #     - description: "execute job from cronjob"
-  #     - cmd: uds zarf tools kubectl create job --from=cronjob/renovate renovate-manual-run-$(date +%s) -n renovate

@@ -17,6 +17,15 @@ spec:
         port: 443
         description: "UDS Tenant Gateway Services"
 
+      - direction: Egress
+        remoteNamespace: valkey
+        remoteSelector:
+          app.kubernetes.io/name: valkey
+        selector:
+          app.kubernetes.io/name: renovate
+        port: 6379
+        description: "Valkey"
+
       # Custom rules for unanticipated scenarios
       {{- range .Values.custom }}
       - direction: {{ .direction }}

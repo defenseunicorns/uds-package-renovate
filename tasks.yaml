@@ -19,8 +19,18 @@ tasks:
       - task: create-gitlab-token-doug
       - task: create-gitlab-token-renovate
       - task: deploy:test-bundle
+      - task: create-valkey-secret
       - task: test:all
 
+  - name: create-valkey-secret
+    actions:
+      - cmd: |
+          if ! kubectl get namespace renovate > /dev/null 2>&1; then
+            echo "Namespace 'renovate' doesn't exist. Creating it..."
+            kubectl create namespace renovate
+          fi
+          VALKEY_PASSWORD=$(kubectl get secret valkey-password -n valkey -o jsonpath='{.data.valkey-password}' | base64 --decode)
+          kubectl create secret generic valkey-password -n renovate --from-literal=valkey-password="$VALKEY_PASSWORD" --from-literal=username=""
 
   - name: create-gitlab-token-doug
     actions:
@@ -55,6 +65,7 @@ tasks:
     actions:
       - cmd: kubectl delete namespace renovate || exit 0
       - task: create-renovate-test-bundle
+      - task: create-valkey-secret
       - task: deploy:test-bundle
       - task: test:all
 
@@ -71,4 +82,5 @@ tasks:
       - task: create-gitlab-token-doug
       - task: create-gitlab-token-renovate
       - task: deploy:test-bundle
+      - task: create-valkey-secret
       - task: test:all
