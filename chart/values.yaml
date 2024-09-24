@@ -2,20 +2,19 @@ domain: "###ZARF_VAR_DOMAIN###"
 
 redis:
   # set redis host to "" to disable redis and store cache on local filesystem
-  host: "valkey-master.valkey.svc.cluster.local"
+  host: "valkey-master.i-love-valkey.svc.cluster.local"
   port: 6379
   username: ""
   # Note: Specifying password as anything other than "" will not use the existingSecret
   password: ""
   existingSecret:
-    name: "valkey-password"
-    passwordKey: valkey-password
-    usernameKey: username
+    name: valkey-password
+    passwordKey: password
 
 # token to use to communicate with the configured platform. (e.g PAT token for gitlab)
 platformToken:
-  # value will be used directly if given, else the value will be looked up from existing secret as specified in fromExistingSecret
-  #value: ""
+  # Note: Specifying value as anything other than "" will not use the existingSecret
+  value: ""
   existingSecret:
     name: gitlab-token-renovate
     namespace: gitlab

@@ -7,27 +7,18 @@ metadata:
   # x-release-please-end
 
 packages:
-  - name: renovate
-    path: ../
-    # x-release-please-start-version
-    ref: 38.67.2-uds.0
-    # x-release-please-end
-
   - name: valkey
     repository: ghcr.io/defenseunicorns/packages/uds/valkey
     ref: 7.2.6-uds.0-upstream
     overrides:
       valkey:
+        valkey:
+          namespace: "i-love-valkey"
         uds-valkey-config:
+          namespace: "i-love-valkey"
           values:
             - path: custom
               value:
-                - direction: Ingress
-                  selector:
-                    app.kubernetes.io/name: valkey
-                  remoteNamespace: gitlab
-                  port: 6379
-                  description: "Ingress from GitLab"
                 - direction: Ingress
                   selector:
                     app.kubernetes.io/name: valkey
@@ -37,6 +28,13 @@ packages:
             - path: copyPassword
               value:
                 enabled: true
-                namespace: gitlab
-                secretName: gitlab-redis
+                namespace: renovate
+                secretName: valkey-password
                 secretKey: password
+
+  - name: renovate
+    path: ../
+    # x-release-please-start-version
+    ref: 38.67.2-uds.0
+    # x-release-please-end
+    # todo (@ewyles) -- put valkey custom netpol here instead of in the uds-package

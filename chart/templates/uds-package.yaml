@@ -18,7 +18,7 @@ spec:
         description: "UDS Tenant Gateway Services"
 
       - direction: Egress
-        remoteNamespace: valkey
+        remoteNamespace: i-love-valkey
         remoteSelector:
           app.kubernetes.io/name: valkey
         selector:
