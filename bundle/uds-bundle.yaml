@@ -54,3 +54,7 @@ packages:
                     app.kubernetes.io/name: renovate
                   port: 6379
                   description: "Egress to Valkey"
+        renovate:
+          values:
+            - path: cronjob.suspend
+              value: true #suspend the cronjob so a scheduled run doesn't conflict with tests

@@ -24,6 +24,7 @@ envFrom:
 
 cronjob:
   schedule: "###ZARF_VAR_RENOVATE_SCHEDULE###"
+  suspend: false
 
 serviceAccount:
   create: true

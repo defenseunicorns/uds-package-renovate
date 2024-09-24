@@ -11,7 +11,7 @@ variables:
   - name: DOMAIN
     default: "uds.dev"
   - name: RENOVATE_SCHEDULE
-    default: "*/5 * * * *"
+    default: "*/15 * * * *"
 
 components:
   - name: renovate
