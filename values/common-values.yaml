@@ -1,16 +1,16 @@
-# the extra volume, mount, and existingConfigFile reference are used to wire in the initial 
+# the extra volume, mount, and existingConfigFile reference are used to wire in the initial
 # self-hosted config.json. See: https://docs.renovatebot.com/self-hosted-configuration/
 # contents of the config.json are supplied in the values.yaml of the uds-renovate-config chart
 # and put into the uds-renovate-config secret
 extraVolumes:
-    - name: renovate-config-volume
-      secret:
-        secretName: renovate-config
+  - name: renovate-config-volume
+    secret:
+      secretName: renovate-config
 
 extraVolumeMounts:
-    - name: renovate-config-volume
-      mountPath: /usr/src/app/renovate-config.json
-      subPath: config.json
+  - name: renovate-config-volume
+    mountPath: /usr/src/app/renovate-config.json
+    subPath: config.json
 
 renovate:
   existingConfigFile: /usr/src/app/renovate-config.json

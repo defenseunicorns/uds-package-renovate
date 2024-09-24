@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
-  name: archivista
-  description: "A deployment of Archivista, an application for storing in-toto attestations."
+  name: my-zarf-package
+  description: "This is a zarf package that's just here to give renovate something to see in tests."
   # x-release-please-start-version
   version: "0.5.3-uds.4"
   # x-release-please-end

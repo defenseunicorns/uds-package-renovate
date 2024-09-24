@@ -13,9 +13,11 @@ packages:
     overrides:
       valkey:
         valkey:
-          namespace: "renovate-valkey"
+          # using a custom namespace here in the test bundle
+          # to deconflict with valkey deployed by gitlab dependency
+          namespace: "valkey-renovate"
         uds-valkey-config:
-          namespace: "renovate-valkey"
+          namespace: "valkey-renovate"
           values:
             - path: custom
               value:
@@ -45,7 +47,7 @@ packages:
             - path: custom
               value:
                 - direction: Egress
-                  remoteNamespace: renovate-valkey
+                  remoteNamespace: valkey-renovate
                   remoteSelector:
                     app.kubernetes.io/name: valkey
                   selector:
