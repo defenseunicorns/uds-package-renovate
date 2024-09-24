@@ -2,7 +2,7 @@ domain: "###ZARF_VAR_DOMAIN###"
 
 redis:
   # set redis host to "" to disable redis and store cache on local filesystem
-  host: "valkey-master.i-love-valkey.svc.cluster.local"
+  host: "valkey-master.renovate-valkey.svc.cluster.local"
   port: 6379
   username: ""
   # Note: Specifying password as anything other than "" will not use the existingSecret

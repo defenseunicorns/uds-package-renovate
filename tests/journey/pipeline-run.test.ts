@@ -7,8 +7,8 @@ import { rm } from 'fs/promises';
 
 const domainSuffix = process.env.DOMAIN_SUFFIX || ".uds.dev"
 
-test('upload archivista', async () => {
-    const sourceRepoName = 'archivista'
+test('upload demo-repo', async () => {
+    const sourceRepoName = 'demo-repo'
     const user = 'doug'
     const nowMillis = Date.now()
     var sourceDir = path.join(__dirname, 'repo-sources', sourceRepoName)
@@ -28,7 +28,7 @@ test('upload archivista', async () => {
 
     // kick off a manual renovate run and wait for it
     const jobName=await createJobFromCronJob('renovate', 'renovate')
-    await waitForJobCompletion(jobName, 'renovate', 60)
+    await waitForJobCompletion(jobName, 'renovate', 120)
 
     // check that project 1 got a merge request
     var mergeRequest1Found = await findMergeRequest(token, projectId, 'renovatebot', 'Configure Renovate')

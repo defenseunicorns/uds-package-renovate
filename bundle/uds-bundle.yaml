@@ -13,9 +13,9 @@ packages:
     overrides:
       valkey:
         valkey:
-          namespace: "i-love-valkey"
+          namespace: "renovate-valkey"
         uds-valkey-config:
-          namespace: "i-love-valkey"
+          namespace: "renovate-valkey"
           values:
             - path: custom
               value:
@@ -38,3 +38,17 @@ packages:
     ref: 38.67.2-uds.0
     # x-release-please-end
     # todo (@ewyles) -- put valkey custom netpol here instead of in the uds-package
+    overrides:
+      renovate:
+        uds-renovate-config:
+          values:
+            - path: custom
+              value:
+                - direction: Egress
+                  remoteNamespace: renovate-valkey
+                  remoteSelector:
+                    app.kubernetes.io/name: valkey
+                  selector:
+                    app.kubernetes.io/name: renovate
+                  port: 6379
+                  description: "Egress to Valkey"
