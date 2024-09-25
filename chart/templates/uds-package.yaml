@@ -17,6 +17,21 @@ spec:
         port: 443
         description: "UDS Tenant Gateway Services"
 
+      {{- if .Values.redis.enabled }}
+      - direction: Egress
+        selector:
+          app.kubernetes.io/name: renovate
+        {{- if .Values.redis.internal }}
+        remoteNamespace: {{ .Values.redis.namespace }}
+        remoteSelector:
+          {{-  .Values.redis.selector | toYaml | nindent 10 }}
+        port: {{ .Values.redis.port }}
+        {{- else }}
+        remoteGenerated: Anywhere
+        {{- end }}
+        description: "Egress to Redis"
+      {{- end }}
+
       # Custom rules for unanticipated scenarios
       {{- range .Values.custom }}
       - direction: {{ .direction }}

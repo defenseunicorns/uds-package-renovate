@@ -14,12 +14,12 @@ tasks:
     actions:
       - task: setup:k3d-test-cluster
       - task: dependencies:create
-      - task: deploy:package # can skip this once i get gitlab-settings done
+      - task: deploy:package # TODO (@ewyles) remove this once i get gitlab-settings changes done
         with:
           path: src/namespace
       - task: dependencies:deploy
       - task: create-renovate-test-bundle
-      - task: create-gitlab-token-renovate
+      - task: create-gitlab-token-renovate # TODO (@ewyles) remove this once i get gitlab-settings done
       - task: deploy:test-bundle
       - task: test:all
 
@@ -58,11 +58,11 @@ tasks:
     actions:
       - task: setup:k3d-test-cluster
       - task: dependencies:create
-      - task: deploy:package
+      - task: deploy:package # TODO (@ewyles) remove this once i get gitlab-settings done
         with:
           path: src/namespace
       - task: dependencies:deploy
       - task: create-renovate-test-bundle
-      - task: create-gitlab-token-renovate
+      - task: create-gitlab-token-renovate # TODO (@ewyles) remove this once i get gitlab-settings done
       - task: deploy:test-bundle
       - task: test:all

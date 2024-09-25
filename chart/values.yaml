@@ -1,7 +1,13 @@
 domain: "###ZARF_VAR_DOMAIN###"
 
 redis:
-  # set redis host to "" to disable redis and store cache on local filesystem
+  enabled: true # set to false to disable redis and store cache on local filesystem
+  
+  internal: true
+  selector:
+    app.kubernetes.io/name: valkey
+  namespace: valkey-renovate
+  
   host: "valkey-master.valkey-renovate.svc.cluster.local"
   port: 6379
   username: ""
@@ -17,7 +23,6 @@ platformToken:
   value: ""
   existingSecret:
     name: gitlab-token-renovate
-    namespace: renovate
     tokenKey: TOKEN
 
 renovate:
