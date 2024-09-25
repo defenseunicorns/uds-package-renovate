@@ -14,7 +14,7 @@ tasks:
     actions:
       - task: create-renovate-test-bundle
       - task: setup:k3d-test-cluster
-      - task: dependencies:create      
+      - task: dependencies:create
       - task: dependencies:deploy
       - task: create-gitlab-token-renovate
       - task: deploy:test-bundle
