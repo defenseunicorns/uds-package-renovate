@@ -15,25 +15,16 @@ tasks:
       - task: create-renovate-test-bundle
       - task: setup:k3d-test-cluster
       - task: dependencies:deploy
-      - task: setup:create-doug-user
-      - task: create-gitlab-token-doug
-      - task: create-gitlab-token-renovate
       - task: deploy:test-bundle
+      - task: create-gitlab-token-renovate
       - task: test:all
-
-  - name: create-gitlab-token-doug
-    actions:
-      - cmd: |
-          TOOLBOX_POD_NAME=$(kubectl get pods -n gitlab -l app=toolbox -o jsonpath='{.items[0].metadata.name}')
-          DOUG_TOKEN_TEXT=$(./uds zarf tools kubectl --namespace gitlab exec -i $TOOLBOX_POD_NAME -- gitlab-rails runner "u = User.new(username: 'doug', email: 'doug@uds.dev', name: 'Doug Unicorn', password: '3tR%82eav4opuVqg', password_confirmation: '3tR%82eav4opuVqg'); u.assign_personal_namespace(Organizations::Organization.default_organization); u.skip_confirmation!; u.save!; token = User.find_by_username('doug').personal_access_tokens.create(scopes: ['api', 'admin_mode', 'read_repository', 'write_repository'], name: 'Doug Test Token ${nowMillis}', expires_at: 5.days.from_now); token.save!; puts token.token")
-          kubectl create secret generic gitlab-token-doug --namespace gitlab --from-literal=TOKEN=$DOUG_TOKEN_TEXT --dry-run=client -o yaml | kubectl apply -f -
 
   - name: create-gitlab-token-renovate
     actions:
       - cmd: |
           TOOLBOX_POD_NAME=$(kubectl get pods -n gitlab -l app=toolbox -o jsonpath='{.items[0].metadata.name}')
           RENO_TOKEN_TEXT=$(./uds zarf tools kubectl --namespace gitlab exec -i $TOOLBOX_POD_NAME -- gitlab-rails runner "u = User.new(username: 'renovatebot', email: 'renovatebot@uds.dev', name: 'Renovate Bot', password: '3tR%82eav4opuVqg', password_confirmation: '3tR%82eav4opuVqg'); u.assign_personal_namespace(Organizations::Organization.default_organization); u.skip_confirmation!; u.save!; token = User.find_by_username('renovatebot').personal_access_tokens.create(scopes: ['api', 'read_repository', 'write_repository'], name: 'Renovate Bot Token ${nowMillis}', expires_at: 5.days.from_now); token.save!; puts token.token")
-          kubectl create secret generic gitlab-token-renovate --namespace gitlab --from-literal=TOKEN=$RENO_TOKEN_TEXT --dry-run=client -o yaml | kubectl apply -f -
+          kubectl create secret generic gitlab-token-renovate --namespace renovate --from-literal=TOKEN=$RENO_TOKEN_TEXT --dry-run=client -o yaml | kubectl apply -f -
 
   - name: create-renovate-package
     description: Create the Renovate package
@@ -46,13 +37,11 @@ tasks:
     description: Create a local UDS Renovate bundle
     actions:
       - task: create-renovate-package
-      - task: dependencies:create
       - task: create:test-bundle
 
   - name: dev
     description: Create and deploy the bundle on an existing cluster (for iteration/dev speed)
     actions:
-      - cmd: kubectl delete namespace renovate || exit 0
       - task: create-renovate-test-bundle
       - task: deploy:test-bundle
       - task: test:all
@@ -66,8 +55,6 @@ tasks:
       - task: create-renovate-test-bundle
       - task: setup:k3d-test-cluster
       - task: dependencies:deploy
-      - task: setup:create-doug-user
-      - task: create-gitlab-token-doug
-      - task: create-gitlab-token-renovate
       - task: deploy:test-bundle
+      - task: create-gitlab-token-renovate
       - task: test:all

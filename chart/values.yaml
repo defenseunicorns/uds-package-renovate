@@ -17,7 +17,7 @@ platformToken:
   value: ""
   existingSecret:
     name: gitlab-token-renovate
-    namespace: gitlab
+    namespace: renovate
     tokenKey: TOKEN
 
 renovate:

@@ -9,12 +9,17 @@ const domainSuffix = process.env.DOMAIN_SUFFIX || ".uds.dev"
 
 test('upload demo-repo', async () => {
     const sourceRepoName = 'demo-repo'
-    const user = 'doug'
+    const user = 'root'
     const nowMillis = Date.now()
     var sourceDir = path.join(__dirname, 'repo-sources', sourceRepoName)
 
-    const token = await getToken(user);
-    console.log(`Using token [${token}] for user [${user}]`)
+    //const token = `if-you-see-me-in-production-something-is-horribly-wrong-${nowMillis}`    
+
+    // Get the toolbox pod and add a token to the root GitLab user
+    const token = await createToken(nowMillis)
+
+    // const token = await getRootToken(user);
+    console.log(`Using token [${token}] for user [root]`)
     const headers: HeadersInit = [["PRIVATE-TOKEN", token]]
 
     // upload project once and invite renovate
@@ -23,8 +28,8 @@ test('upload demo-repo', async () => {
     await inviteRenovateBotToProject(headers, projectId, token);
 
     // // upload same project again under a different name and don't invite renovate
-    const gitLabProjectName2 = `${sourceRepoName}-${nowMillis}-2`
-    const projectId2 = await createNewGitlabProject(sourceDir, user, token, gitLabProjectName2, headers)
+    const gitlabProjectNameNoRenovate = `${sourceRepoName}-${nowMillis}-no-renovate`
+    const projectId2 = await createNewGitlabProject(sourceDir, user, token, gitlabProjectNameNoRenovate, headers)
 
     // kick off a manual renovate run and wait for it
     const jobName=await createJobFromCronJob('renovate', 'renovate')
@@ -37,7 +42,7 @@ test('upload demo-repo', async () => {
     // check that project 2 did not get a merge request
     var mergeRequest2Found = await findMergeRequest(token, projectId2, 'renovatebot', 'Configure Renovate')
     expect(mergeRequest2Found).toBe(false)
-}, 90000);
+}, 120000);
 
 
 async function inviteRenovateBotToProject(headers: HeadersInit, projectId: any, token: string) {
@@ -61,7 +66,23 @@ async function inviteRenovateBotToProject(headers: HeadersInit, projectId: any, 
     console.log(response);
 }
 
-async function getToken(user: string) : Promise<string> {
+async function createToken(nowMillis: number) : Promise<string> {
+    const toolboxPods = await K8s(kind.Pod).InNamespace("gitlab").WithLabel("app", "toolbox").Get()
+    const toolboxPod = toolboxPods.items.at(0)
+    const result = zarfExec(["tools",
+        "kubectl",
+        "--namespace", "gitlab",
+        "exec",
+        "-i",
+        toolboxPod?.metadata?.name!,
+        "--",
+        `gitlab-rails runner "token = User.find_by_username('root').personal_access_tokens.create(scopes: ['api', 'admin_mode', 'read_repository', 'write_repository'], name: 'Root Test Token ${nowMillis}', expires_at: 2.days.from_now); token.save!; puts token.token"`
+    ], true);
+
+    return result.stdout.toString().trim()
+}
+
+async function getRootToken(user: string) : Promise<string> {
     const secret = await K8s(kind.Secret).InNamespace('gitlab').Get(`gitlab-token-${user}`);
     if (secret.data) {
         return atob(secret.data['TOKEN'])
