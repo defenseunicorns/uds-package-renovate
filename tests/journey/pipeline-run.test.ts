@@ -82,15 +82,6 @@ async function createToken(nowMillis: number) : Promise<string> {
     return result.stdout.toString().trim()
 }
 
-async function getRootToken(user: string) : Promise<string> {
-    const secret = await K8s(kind.Secret).InNamespace('gitlab').Get(`gitlab-token-${user}`);
-    if (secret.data) {
-        return atob(secret.data['TOKEN'])
-    } else {
-        return "";
-    }
-}
-
 async function createNewGitlabProject(sourceDir: string, user: string, tokenName: string, gitLabProjectName: string, headers: HeadersInit) {
     await deleteDirectory(path.join(sourceDir, '.git')) 
     execSync('git init', { cwd: sourceDir })
