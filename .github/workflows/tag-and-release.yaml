@@ -52,6 +52,9 @@ jobs:
           ghToken: ${{ secrets.GITHUB_TOKEN }}
           chainguardIdentity: ${{ secrets.CHAINGUARD_IDENTITY }}
 
+      - name: NPM setup
+        run: cd tests && npm ci
+
       - name: Build Package
         run: uds run -f tasks/publish.yaml build-package --set FLAVOR=${{ matrix.flavor }} --no-progress
 

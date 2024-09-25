@@ -54,6 +54,9 @@ jobs:
           ghToken: ${{ secrets.GITHUB_TOKEN }}
           chainguardIdentity: ${{ secrets.CHAINGUARD_IDENTITY }}
 
+      - name: NPM setup
+        run: cd tests && npm ci
+
       - name: Test
         uses: defenseunicorns/uds-common/.github/actions/test@76287d41ec5f06ecbdd0a6453877a78675aceffe # v0.11.2
         with:
