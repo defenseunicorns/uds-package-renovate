@@ -7,6 +7,10 @@ metadata:
   # x-release-please-end
 
 packages:
+  - name: dev-namespace
+    path: ../
+    ref: 0.1.0
+
   - name: valkey
     repository: ghcr.io/defenseunicorns/packages/uds/valkey
     ref: 7.2.6-uds.0-upstream
