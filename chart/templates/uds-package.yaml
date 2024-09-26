@@ -6,7 +6,6 @@ metadata:
 spec:
   network:
     allow:
-      # TODO (@ewyles) -- get input from team on this policy. Renovate needs to be able to connect to gitlab api
       # Allow access to other UDS services (i.e. gitlab.<domain>) from renovate
       - direction: Egress
         remoteNamespace: istio-tenant-gateway

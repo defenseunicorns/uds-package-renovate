@@ -7,4 +7,4 @@ tasks:
     description: Push repos to gitlab
     actions:
       - dir: tests
-        cmd: npm test -- journey/pipeline-run.test.ts
+        cmd: npm test -- journey/onboard-repos.test.ts
