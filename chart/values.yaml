@@ -40,11 +40,4 @@ renovate:
   config: |
     {
         "enabled": true,
-        "forkProcessing": "enabled",
-        "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-        "extends": [
-            ":dependencyDashboard",
-            "config:base",
-            "helpers:pinGitHubActionDigests",
-        ],
     }
