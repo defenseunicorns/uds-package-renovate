@@ -29,7 +29,7 @@ components:
                 kind: Packages
                 name: renovate
                 namespace: renovate
-                condition: "'{.status.phase}'=Ready"        
+                condition: "'{.status.phase}'=Ready"
           - description: Validate Renovate CronJob Exists
             maxTotalSeconds: 300
             wait:
