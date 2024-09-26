@@ -8,7 +8,7 @@ This package is designed for use as part of a [UDS Software Factory](https://git
 
 ## Optional Dependencies
 
-Renovate can be configured to persist it's cache to a Redis instance, either in cluster or external. 
+Renovate can be configured to persist it's cache to a Redis/Valkey instance, either in cluster or external. 
 
 For local testing and CI, Renovate is bundled with [uds-package-valkey](ghcr.io/defenseunicorns/packages/uds/uds-package-valkey).
 
