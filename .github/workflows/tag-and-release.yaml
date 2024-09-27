@@ -30,7 +30,7 @@ jobs:
     timeout-minutes: 40
     strategy:
       matrix:
-        flavor: [upstream, unicorn, registry1]
+        flavor: [upstream, registry1]
         architecture: [amd64, arm64]
         exclude:
           - flavor: registry1
