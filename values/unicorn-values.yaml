@@ -1,4 +1,4 @@
 image:
   registry: cgr.dev
   repository: du-uds-defenseunicorns/renovate-fips
-  tag: 38.96.1
+  tag: 38.96
