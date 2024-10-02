@@ -6,6 +6,7 @@ import { execSync } from 'child_process';
 import { rm } from 'fs/promises';
 
 const domainSuffix = process.env.DOMAIN_SUFFIX || ".uds.dev"
+const renovateUserName = "renovatebot"
 
 test('upload demo-repo', async () => {
     const sourceRepoName = 'demo-repo'
@@ -36,17 +37,17 @@ test('upload demo-repo', async () => {
     await waitForJobCompletion(jobName, 'renovate', 120)
 
     // check that project 1 got a merge request
-    var mergeRequest1Found = await findMergeRequest(token, projectId, 'renovatebot', 'Configure Renovate')
+    var mergeRequest1Found = await findMergeRequest(token, projectId, renovateUserName, 'Configure Renovate')
     expect(mergeRequest1Found).toBe(true)
 
     // check that project 2 did not get a merge request
-    var mergeRequest2Found = await findMergeRequest(token, projectId2, 'renovatebot', 'Configure Renovate')
+    var mergeRequest2Found = await findMergeRequest(token, projectId2, renovateUserName, 'Configure Renovate')
     expect(mergeRequest2Found).toBe(false)
 }, 120000);
 
 
 async function inviteRenovateBotToProject(headers: HeadersInit, projectId: any, token: string) {
-    const userResp = await fetch(`https://gitlab${domainSuffix}/api/v4/users?username=renovatebot`, { headers });
+    const userResp = await fetch(`https://gitlab${domainSuffix}/api/v4/users?username=${renovateUserName}`, { headers });
     const userJson = await userResp.json();
 
     const renovateUserId = userJson[0]?.id

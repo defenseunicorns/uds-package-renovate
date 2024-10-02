@@ -22,7 +22,7 @@ platformToken:
   # Note: Specifying value as anything other than "" will not use the existingSecret
   value: ""
   existingSecret:
-    name: gitlab-token-renovate
+    name: gitlab-renovatebot
     tokenKey: TOKEN
 
 renovate:

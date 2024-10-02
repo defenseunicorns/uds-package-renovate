@@ -11,7 +11,8 @@ tasks:
         cmd: curl -s https://api.github.com/repos/defenseunicorns/uds-package-gitlab/tags  | yq -p=json -r '.[0].name'
         setVariables:
           - name: LATEST_VERSION
-      - description: Download the latest dev UDS config for GitLab
-        cmd: curl -o uds-config-gitlab.yaml https://raw.githubusercontent.com/defenseunicorns/uds-package-gitlab/${LATEST_VERSION}/bundle/uds-config.yaml
       - description: Pull the latest package release
-        cmd: UDS_CONFIG=uds-config-gitlab.yaml uds deploy oci://ghcr.io/defenseunicorns/packages/uds/bundles/gitlab-test:$(echo ${LATEST_VERSION} | tr -d v) --confirm --no-progress
+        cmd: UDS_CONFIG=uds-config-gitlab.yaml uds deploy /Users/ewyles/code/uds-package-gitlab/bundle/uds-bundle-gitlab-test-arm64-17.2.7-uds.1.tar.zst --confirm --no-progress
+        #TODO (@ewyles) swap back to this after gitlab is released, for now just using the one on my local in the step above
+  #     - description: Pull the latest package release
+  #       cmd: UDS_CONFIG=uds-config-gitlab.yaml uds deploy oci://ghcr.io/defenseunicorns/packages/uds/bundles/gitlab-test:$(echo ${LATEST_VERSION} | tr -d v) --confirm --no-progress
