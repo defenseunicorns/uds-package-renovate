@@ -17,7 +17,7 @@ test('upload multiple demo-repos', async () => {
     console.log(`Using token [${token}] for user [${user}]`);
     const headers: HeadersInit = [["PRIVATE-TOKEN", token]];
 
-    const projects = [];
+    const projectIdMap: { [key: string]: { withRenovate: string, withoutRenovate: string } } = {};
 
     // upload each repo to gitlab twice, invite renovate to the first one only, store both project ids for later
     for (const sourceRepoName of sourceRepoNames) {
@@ -32,31 +32,38 @@ test('upload multiple demo-repos', async () => {
         const projectWithoutRenovate = `${sourceRepoName}-${nowMillis}-no-renovate`;
         const projectIdWithoutRenovate = await createNewGitlabProject(sourceDir, user, token, projectWithoutRenovate, headers);
 
-        // Store project details for later validation
-        projects.push({
-            repo: sourceRepoName,
+        projectIdMap[sourceRepoName] = {
             withRenovate: projectIdWithRenovate,
-            withoutRenovate: projectIdWithoutRenovate,
-        });
+            withoutRenovate: projectIdWithoutRenovate
+        };        
     }
 
     // Kick off a manual Renovate run and wait for completion
     const jobName = await createJobFromCronJob('renovate', 'renovate');
-    await waitForJobCompletion(jobName, 'renovate', 120);
+    waitForJobCompletion(jobName, 'renovate', 120);
 
-    for (const project of projects) {
-        const { withRenovate, withoutRenovate } = project;
+    // checks for the zarf project, it already has a renovate config so it should get a dashboard issue
+    const mergeRequestFoundWithRenovateZarf = await findMergeRequest(token, `${projectIdMap['demo-repo-zarf'].withRenovate}`, renovateUserName, 'Configure Renovate');
+    const mergeRequestFoundWithoutRenovateZarf = await findMergeRequest(token, `${projectIdMap['demo-repo-zarf'].withoutRenovate}`, renovateUserName, 'Configure Renovate');
+    const issueFoundWithRenovateZarf = await findOpenIssue(token, `${projectIdMap['demo-repo-zarf'].withRenovate}`, renovateUserName, 'Renovate Dashboard 🤖');
+    const issueFoundWithoutRenovateZarf = await findOpenIssue(token, `${projectIdMap['demo-repo-zarf'].withoutRenovate}`, renovateUserName, 'Renovate Dashboard 🤖');
 
-        // Check that the project with Renovate got a merge request
-        const mergeRequestFoundWithRenovate = await findMergeRequest(token, withRenovate, renovateUserName, 'Configure Renovate');
-        expect(mergeRequestFoundWithRenovate).toBe(true);
+    expect(mergeRequestFoundWithRenovateZarf).toBe(false);
+    expect(mergeRequestFoundWithoutRenovateZarf).toBe(false);
+    expect(issueFoundWithRenovateZarf).toBe(true);
+    expect(issueFoundWithoutRenovateZarf).toBe(false);
 
-        // Check that the project without Renovate did not get a merge request
-        const mergeRequestFoundWithoutRenovate = await findMergeRequest(token, withoutRenovate, renovateUserName, 'Configure Renovate');
-        expect(mergeRequestFoundWithoutRenovate).toBe(false);
-    }
+    // checks for the maven project, it does not have a renovate config so it should get an onboarding pr
+    const mergeRequestFoundWithRenovateMaven = await findMergeRequest(token, `${projectIdMap['demo-repo-maven'].withRenovate}`, renovateUserName, 'Configure Renovate');
+    const mergeRequestFoundWithoutRenovateMaven = await findMergeRequest(token, `${projectIdMap['demo-repo-maven'].withoutRenovate}`, renovateUserName, 'Configure Renovate');
+    const issueFoundWithRenovateMaven = await findOpenIssue(token, `${projectIdMap['demo-repo-maven'].withRenovate}`, renovateUserName, 'Renovate Dashboard 🤖');
+    const issueFoundWithoutRenovateMaven = await findOpenIssue(token, `${projectIdMap['demo-repo-maven'].withoutRenovate}`, renovateUserName, 'Renovate Dashboard 🤖');
 
-    expect(projects.length).toEqual(sourceRepoNames.length); // just here to avoid silent failures if something goes wrong and doesn't make it to an expect
+    expect(mergeRequestFoundWithRenovateMaven).toBe(true);
+    expect(mergeRequestFoundWithoutRenovateMaven).toBe(false);
+    expect(issueFoundWithRenovateMaven).toBe(false);
+    expect(issueFoundWithoutRenovateMaven).toBe(false);
+
 }, 120000);
 
 async function inviteRenovateBotToProject(headers: HeadersInit, projectId: any, token: string) {
@@ -76,8 +83,6 @@ async function inviteRenovateBotToProject(headers: HeadersInit, projectId: any, 
             access_level: 30, // Developer access level
         }),
     });
-
-    console.log(response);
 }
 
 async function createToken(nowMillis: number) : Promise<string> {
@@ -166,6 +171,47 @@ async function findMergeRequest(token: string, projectId: string, userid: string
         return foundExpectedMergeRequest;
     } catch (error) {
         console.error('Error while fetching merge requests:', error);
+        return false;
+    }
+}
+
+async function findOpenIssue(token: string, projectId: string, userid: string, title: string): Promise<boolean> {
+    try {
+        const url = `https://gitlab${domainSuffix}/api/v4/projects/${projectId}/issues?state=opened&per_page=1`;
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`GitLab API request failed: ${response.statusText}`);
+        }
+
+        const issues = await response.json();
+
+        if (issues.length === 0) {
+            console.log('No open issues found');
+            return false;
+        }
+
+        const firstIssue = issues[0];
+
+        const foundExpectedIssue = firstIssue.author.username === userid &&
+                                   firstIssue.title === title;
+
+        if (foundExpectedIssue) {
+            console.log(`Found issue from '${userid}' with title '${title}'.`);
+        } else {
+            console.log('No matching issue found.');
+        }
+
+        return foundExpectedIssue;
+    } catch (error) {
+        console.error('Error while fetching issues:', error);
         return false;
     }
 }
