@@ -14,7 +14,6 @@ test('upload multiple demo-repos', async () => {
     const nowMillis = Date.now();
     
     const token = await createToken(nowMillis);
-    console.log(`Using token [${token}] for user [${user}]`);
     const headers: HeadersInit = [["PRIVATE-TOKEN", token]];
 
     const projectIdMap: { [key: string]: { withRenovate: string, withoutRenovate: string } } = {};
