@@ -16,7 +16,7 @@ components:
         namespace: renovate
         url: https://github.com/renovatebot/helm-charts.git
         gitPath: charts/renovate
-        version: renovate-38.98.0
+        version: renovate-38.107.0
         valuesFiles:
           - ../values/common-values.yaml
     actions:
