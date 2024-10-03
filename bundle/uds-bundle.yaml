@@ -45,3 +45,7 @@ packages:
           values:
             - path: cronjob.suspend
               value: true #suspend the cronjob so a scheduled run doesn't conflict with tests
+        # uds-renovate-config:
+        #   values:
+        #     - path: renovate.config
+        #       value: "{\"enabled\": true}"

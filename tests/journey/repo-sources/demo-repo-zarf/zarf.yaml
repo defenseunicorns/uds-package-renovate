@@ -1,0 +1,11 @@
+kind: ZarfPackageConfig
+metadata:
+  name: some-app
+  description: "This is just here to test that renovate can pick up zarf."
+  version: "0.0.1-uds.0"
+
+components:
+  - name: some-app
+    required: true
+    images:
+      - ghcr.io/some-app/image:0.0.1

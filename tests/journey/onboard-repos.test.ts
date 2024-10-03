@@ -8,43 +8,56 @@ import { rm } from 'fs/promises';
 const domainSuffix = process.env.DOMAIN_SUFFIX || ".uds.dev"
 const renovateUserName = "renovatebot"
 
-test('upload demo-repo', async () => {
-    const sourceRepoName = 'demo-repo'
-    const user = 'root'
-    const nowMillis = Date.now()
-    var sourceDir = path.join(__dirname, 'repo-sources', sourceRepoName)
+test('upload multiple demo-repos', async () => {
+    const sourceRepoNames = ['demo-repo-maven', 'demo-repo-zarf']; // List of repos
+    const user = 'root';
+    const nowMillis = Date.now();
+    
+    const token = await createToken(nowMillis);
+    console.log(`Using token [${token}] for user [${user}]`);
+    const headers: HeadersInit = [["PRIVATE-TOKEN", token]];
 
-    //const token = `if-you-see-me-in-production-something-is-horribly-wrong-${nowMillis}`    
+    const projects = [];
 
-    // Get the toolbox pod and add a token to the root GitLab user
-    const token = await createToken(nowMillis)
+    // upload each repo to gitlab twice, invite renovate to the first one only, store both project ids for later
+    for (const sourceRepoName of sourceRepoNames) {
+        const sourceDir = path.join(__dirname, 'repo-sources', sourceRepoName);
 
-    // const token = await getRootToken(user);
-    console.log(`Using token [${token}] for user [root]`)
-    const headers: HeadersInit = [["PRIVATE-TOKEN", token]]
+        // Create project with Renovate
+        const projectWithRenovate = `${sourceRepoName}-${nowMillis}`;
+        const projectIdWithRenovate = await createNewGitlabProject(sourceDir, user, token, projectWithRenovate, headers);
+        await inviteRenovateBotToProject(headers, projectIdWithRenovate, token);
 
-    // upload project once and invite renovate
-    const gitLabProjectName = `${sourceRepoName}-${nowMillis}`
-    const projectId = await createNewGitlabProject(sourceDir, user, token, gitLabProjectName, headers)
-    await inviteRenovateBotToProject(headers, projectId, token);
+        // Create project without Renovate
+        const projectWithoutRenovate = `${sourceRepoName}-${nowMillis}-no-renovate`;
+        const projectIdWithoutRenovate = await createNewGitlabProject(sourceDir, user, token, projectWithoutRenovate, headers);
 
-    // // upload same project again under a different name and don't invite renovate
-    const gitlabProjectNameNoRenovate = `${sourceRepoName}-${nowMillis}-no-renovate`
-    const projectId2 = await createNewGitlabProject(sourceDir, user, token, gitlabProjectNameNoRenovate, headers)
+        // Store project details for later validation
+        projects.push({
+            repo: sourceRepoName,
+            withRenovate: projectIdWithRenovate,
+            withoutRenovate: projectIdWithoutRenovate,
+        });
+    }
 
-    // kick off a manual renovate run and wait for it
-    const jobName=await createJobFromCronJob('renovate', 'renovate')
-    await waitForJobCompletion(jobName, 'renovate', 120)
+    // Kick off a manual Renovate run and wait for completion
+    const jobName = await createJobFromCronJob('renovate', 'renovate');
+    await waitForJobCompletion(jobName, 'renovate', 120);
 
-    // check that project 1 got a merge request
-    var mergeRequest1Found = await findMergeRequest(token, projectId, renovateUserName, 'Configure Renovate')
-    expect(mergeRequest1Found).toBe(true)
+    for (const project of projects) {
+        const { withRenovate, withoutRenovate } = project;
 
-    // check that project 2 did not get a merge request
-    var mergeRequest2Found = await findMergeRequest(token, projectId2, renovateUserName, 'Configure Renovate')
-    expect(mergeRequest2Found).toBe(false)
+        // Check that the project with Renovate got a merge request
+        const mergeRequestFoundWithRenovate = await findMergeRequest(token, withRenovate, renovateUserName, 'Configure Renovate');
+        expect(mergeRequestFoundWithRenovate).toBe(true);
+
+        // Check that the project without Renovate did not get a merge request
+        const mergeRequestFoundWithoutRenovate = await findMergeRequest(token, withoutRenovate, renovateUserName, 'Configure Renovate');
+        expect(mergeRequestFoundWithoutRenovate).toBe(false);
+    }
+
+    expect(projects.length).toEqual(sourceRepoNames.length); // just here to avoid silent failures if something goes wrong and doesn't make it to an expect
 }, 120000);
-
 
 async function inviteRenovateBotToProject(headers: HeadersInit, projectId: any, token: string) {
     const userResp = await fetch(`https://gitlab${domainSuffix}/api/v4/users?username=${renovateUserName}`, { headers });
@@ -84,6 +97,7 @@ async function createToken(nowMillis: number) : Promise<string> {
 }
 
 async function createNewGitlabProject(sourceDir: string, user: string, tokenName: string, gitLabProjectName: string, headers: HeadersInit) {
+    console.log(`Uploading directory ${sourceDir} to gitlab as ${gitLabProjectName}`)
     await deleteDirectory(path.join(sourceDir, '.git')) 
     execSync('git init', { cwd: sourceDir })
     execSync('git add . ', { cwd: sourceDir })
@@ -137,8 +151,6 @@ async function findMergeRequest(token: string, projectId: string, userid: string
             console.log('No merge requests found');
             return false;
         }
-
-        console.log(mergeRequests)
 
         const firstMergeRequest = mergeRequests[0];
 
