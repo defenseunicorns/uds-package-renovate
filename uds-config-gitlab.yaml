@@ -1,0 +1,66 @@
+variables:
+  dev-minio:
+    buckets: |
+      - name: uds-gitlab-artifacts
+      - name: uds-gitlab-backups
+      - name: uds-gitlab-ci-secure-files
+      - name: uds-gitlab-dependency-proxy
+      - name: uds-gitlab-lfs
+      - name: uds-gitlab-mr-diffs
+      - name: uds-gitlab-packages
+      - name: uds-gitlab-pages
+      - name: uds-gitlab-terraform-state
+      - name: uds-gitlab-uploads
+      - name: uds-gitlab-registry
+      - name: uds-gitlab-tmp
+  gitlab:
+    DISABLE_REGISTRY_REDIRECT: "true"
+    GITLAB_PAGES_ENABLED: true
+    GITLAB_REQUIRED_GROUPS: [] # ["/GitLab"]
+    GITLAB_ADMIN_GROUPS: ["/GitLab Admin", "/UDS Core/Admin"]
+    GITLAB_SSO_PROTOCOL: saml
+    # # Overrides for scaled down cluster for local dev and CI
+    webservice_replicas: 1
+    webservice_resources:
+      limits:
+        memory: 2.5G
+      requests:
+        cpu: 300m
+        memory: 2.5G
+    migrations_resources:
+      limits:
+        cpu: 500m
+        memory: 4G
+    workhorse_resources:
+      limits:
+        memory: 100M
+      requests:
+        cpu: 10m
+        memory: 10M
+    sidekiq_replicas: 1
+    sidekiq_resources:
+      limits:
+        memory: 1.5G
+      requests:
+        cpu: 50m
+        memory: 625M
+    pages_resources:
+      limits:
+        memory: 1.5G
+      requests:
+        cpu: 50m
+        memory: 625M
+    registry_replicas: 1
+    shell_replicas: 1
+    bot_accounts:
+      enabled: true
+      accounts:
+        - username: renovatebot
+          scopes:
+            - api
+            - read_repository
+            - write_repository
+          secret:
+            name: gitlab-renovatebot
+            namespace: renovate
+            keyName: TOKEN

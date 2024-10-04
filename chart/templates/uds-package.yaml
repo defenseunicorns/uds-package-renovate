@@ -1,0 +1,48 @@
+apiVersion: uds.dev/v1alpha1
+kind: Package
+metadata:
+  name: renovate
+  namespace: {{ .Release.Namespace }}
+spec:
+  network:
+    allow:
+      # Allow access to other UDS services (i.e. gitlab.<domain>) from renovate
+      - direction: Egress
+        remoteNamespace: istio-tenant-gateway
+        remoteSelector:
+          app: tenant-ingressgateway
+        selector:
+          app.kubernetes.io/name: renovate
+        port: 443
+        description: "UDS Tenant Gateway Services"
+
+      {{- if .Values.redis.enabled }}
+      - direction: Egress
+        selector:
+          app.kubernetes.io/name: renovate
+        {{- if .Values.redis.internal }}
+        remoteNamespace: {{ .Values.redis.namespace }}
+        remoteSelector:
+          {{-  .Values.redis.selector | toYaml | nindent 10 }}
+        port: {{ .Values.redis.port }}
+        {{- else }}
+        remoteGenerated: Anywhere
+        {{- end }}
+        description: "Egress to Redis"
+      {{- end }}
+
+      # Custom rules for unanticipated scenarios
+      {{- range .Values.custom }}
+      - direction: {{ .direction }}
+        selector:
+          {{ .selector | toYaml | nindent 10 }}
+        {{- if not .remoteGenerated }}
+        remoteNamespace: {{ .remoteNamespace }}
+        remoteSelector:
+          {{ .remoteSelector | toYaml | nindent 10 }}
+        port: {{ .port }}
+        {{- else }}
+        remoteGenerated: {{ .remoteGenerated }}
+        {{- end }}
+        description: {{ .description }}
+      {{- end }}

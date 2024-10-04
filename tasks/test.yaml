@@ -1,0 +1,10 @@
+tasks:
+  - name: all
+    actions:
+      - task: make-repos
+
+  - name: make-repos
+    description: Push repos to gitlab
+    actions:
+      - dir: tests
+        cmd: npm test -- journey/onboard-repos.test.ts

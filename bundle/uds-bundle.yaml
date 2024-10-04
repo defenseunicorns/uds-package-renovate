@@ -1,0 +1,47 @@
+kind: UDSBundle
+metadata:
+  name: renovate-test
+  description: A UDS bundle for deploying Renovate and it's dependencies on a development cluster
+  # x-release-please-start-version
+  version: 38.107.0-uds.0
+  # x-release-please-end
+
+packages:
+  - name: valkey
+    repository: ghcr.io/defenseunicorns/packages/uds/valkey
+    ref: 7.2.6-uds.0-upstream
+    overrides:
+      valkey:
+        valkey:
+          # using a custom namespace here in the test bundle
+          # to deconflict with valkey deployed by gitlab dependency
+          namespace: "valkey-renovate"
+        uds-valkey-config:
+          namespace: "valkey-renovate"
+          values:
+            - path: custom
+              value:
+                - direction: Ingress
+                  selector:
+                    app.kubernetes.io/name: valkey
+                  remoteNamespace: renovate
+                  port: 6379
+                  description: "Ingress from Renovate"
+            - path: copyPassword
+              value:
+                enabled: true
+                namespace: renovate
+                secretName: valkey-password
+                secretKey: password
+
+  - name: renovate
+    path: ../
+    # x-release-please-start-version
+    ref: 38.107.0-uds.0
+    # x-release-please-end
+    overrides:
+      renovate:
+        renovate:
+          values:
+            - path: cronjob.suspend
+              value: true #suspend the cronjob so a scheduled run doesn't conflict with tests

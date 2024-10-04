@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: renovate
+  description: "A deployment of Renovate, a bot for automated dependency updates."
+  # x-release-please-start-version
+  version: "38.107.0-uds.0"
+  # x-release-please-end
+
+variables:
+  - name: DOMAIN
+    default: "uds.dev"
+  - name: RENOVATE_SCHEDULE
+    default: "*/15 * * * *"
+
+components:
+  - name: renovate
+    required: true
+    description: "Deploy Renovate"
+    import:
+      path: common
+    only:
+      flavor: upstream
+    charts:
+      - name: renovate
+        valuesFiles:
+          - values/upstream-values.yaml
+    images:
+      - ghcr.io/renovatebot/renovate:38.107.0-full
+
+  - name: renovate
+    required: true
+    description: "Deploy Renovate"
+    import:
+      path: common
+    only:
+      flavor: registry1
+    charts:
+      - name: renovate
+        valuesFiles:
+          - values/registry1-values.yaml
+    images:
+      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:38.107.0

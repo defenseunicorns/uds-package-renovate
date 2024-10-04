@@ -1,0 +1,10 @@
+.cache/
+.idea/
+.vscode/
+build/
+.DS_Store
+*.tar.zst
+zarf-sbom
+
+**node_modules
+**coverage
