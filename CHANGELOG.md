@@ -1,5 +1,12 @@
 # Changelog
 
+## [38.107.0-uds.1](https://github.com/defenseunicorns/uds-package-renovate/compare/v38.107.0-uds.0...v38.107.0-uds.1) (2024-10-04)
+
+
+### Miscellaneous
+
+* correct the test steps used in the tag-and-release workflow ([#7](https://github.com/defenseunicorns/uds-package-renovate/issues/7)) ([c51fa6b](https://github.com/defenseunicorns/uds-package-renovate/commit/c51fa6b360f90feb7ca7de43177065cc89f79ce4))
+
 ## [38.107.0-uds.0](https://github.com/defenseunicorns/uds-package-renovate/compare/v38.107.0-uds.0...v38.107.0-uds.0) (2024-10-04)
 
 
