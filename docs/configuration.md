@@ -27,6 +27,7 @@ Renovate can optionally connect to a Redis instance to cache data between runs. 
 - `redis.internal` - Set to `true` to use redis in the cluster, or `false` to use an external redis.
 - `redis.selector` - Used to set the selector for network policies if `redis.internal` is `true`.
 - `redis.namespace` - Used to set the remoteNamespace for network policies if `redis.internal` is `true`.
+- `redis.scheme` - The url scheme of the redis connection string. Defaults to `redis`.
 - `redis.host` - The hostname to connect to.
 - `redis.port` - The port to connect to.
 - `redis.username` - The username to authenticate to redis. Leave as empty string for anonymous auth.
