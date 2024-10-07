@@ -4,7 +4,7 @@ metadata:
   name: renovate
   description: "A deployment of Renovate, a bot for automated dependency updates."
   # x-release-please-start-version
-  version: "38.107.0-uds.1"
+  version: "38.110.2-uds.1"
   # x-release-please-end
 
 variables:
@@ -26,7 +26,7 @@ components:
         valuesFiles:
           - values/upstream-values.yaml
     images:
-      - ghcr.io/renovatebot/renovate:38.107.0-full
+      - ghcr.io/renovatebot/renovate:38.110.2-full
 
   - name: renovate
     required: true
@@ -40,4 +40,4 @@ components:
         valuesFiles:
           - values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:38.107.0
+      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:38.110.2
