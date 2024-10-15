@@ -1,0 +1,25 @@
+{
+    "enabled": true,
+    "forkProcessing": "enabled",
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+      "github>defenseunicorns/uds-common//config/renovate.json5",
+      ":semanticCommits",
+      ":semanticCommitTypeAll(chore)"
+    ],
+    "packageRules": [
+      {
+        "groupName": "Renovate Support Dependencies",
+        "labels": ["support-deps"],
+        "commitMessageTopic": "support-deps",
+        "packagePatterns": ["*"]
+      },
+      {
+        "groupName": "Renovate Package Dependencies",
+        "labels": ["package-deps"],
+        "commitMessageTopic": "package-deps",
+        "matchDatasources": ["docker", "helm", "git-tags"]
+      }
+    ]
+  }
+  
