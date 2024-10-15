@@ -1,7 +1,7 @@
 # 🏭 UDS Renovate Package
 
 [![Latest Release](https://img.shields.io/github/v/release/defenseunicorns/uds-package-renovate)](https://github.com/defenseunicorns/uds-package-renovate/releases)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/defenseunicorns/uds-package-renovate/tag-and-release.yaml)](https://github.com/defenseunicorns/uds-package-renovate/actions/workflows/tag-and-release.yaml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/defenseunicorns/uds-package-renovate/release.yaml)](https://github.com/defenseunicorns/uds-package-renovate/actions/workflows/release.yaml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/uds-package-renovate/badge)](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/uds-package-renovate)
 
 This package is designed for use as part of a [UDS Software Factory](https://github.com/defenseunicorns/uds-software-factory) bundle deployed on [UDS Core](https://github.com/defenseunicorns/uds-core).
