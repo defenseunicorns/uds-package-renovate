@@ -1,3 +1,6 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
 # the extra volume, mount, and existingConfigFile reference are used to wire in the initial
 # self-hosted config.json. See: https://docs.renovatebot.com/self-hosted-configuration/
 # contents of the config.json are supplied in the values.yaml of the uds-renovate-config chart
