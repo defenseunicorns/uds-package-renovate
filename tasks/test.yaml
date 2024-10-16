@@ -4,6 +4,8 @@
 tasks:
   - name: all
     actions:
+      - dir: tests
+        cmd: npm ci
       - task: make-repos
 
   - name: make-repos

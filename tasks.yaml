@@ -21,6 +21,7 @@ tasks:
     actions:
       - task: create-dev-package
       - task: setup:k3d-test-cluster
+      - task: dependencies:deploy
       - task: create-deploy-test-bundle
 
   - name: create-dev-package
