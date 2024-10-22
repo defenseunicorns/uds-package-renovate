@@ -1,0 +1,47 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+component-definition:
+  uuid: 894c6a01-c99a-4383-963d-8293951e4283
+  metadata:
+    title: UDS Package Renovate
+    last-modified: "2024-10-15T19:57:17Z"
+    version: "20241015"
+    oscal-version: 1.1.2
+    parties:
+      - uuid: f3cf70f8-ba44-4e55-9ea3-389ef24847d3
+        type: organization
+        name: Defense Unicorns
+        links:
+          - href: https://defenseunicorns.com
+            rel: website
+  components:
+    - uuid: 25660123-d9d0-4bbf-80f4-a4164597d750
+      type: software
+      title: Renovate
+      description: |
+        Renovate is a bot that creates pull/merge requests to update your dependencies and lock files on various platforms.
+      purpose: Provides checks for dependency updates within git repositories to help developers stay on the newest versions and stay ahead of potential vulnerabilities.
+      responsible-roles:
+        - role-id: provider
+          party-uuids:
+            - f3cf70f8-ba44-4e55-9ea3-389ef24847d3
+      control-implementations:
+        - uuid: d2afb4c4-2cd8-5305-a6cc-d1bc7b388d0c
+          source: https://raw.githubusercontent.com/GSA/fedramp-automation/93ca0e20ff5e54fc04140613476fba80f08e3c7d/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline-resolved-profile_catalog.json
+          description: Controls implemented by Renovate for inheritance by applications that adheres to FedRAMP High Baseline and DoD IL 6.
+          implemented-requirements:
+            - uuid: 7151ca42-bd58-4dd7-baa8-f1d14b006185
+              control-id: cm-3.6
+              description: >-
+                Renovate utilizes the underlying Istio for FIPS encryption in transit and leverages external encrypted Valkey or Redis key value store for storage.
+            - uuid: db480bb6-4365-4111-b916-2dd8a9a82baa
+              control-id: sc-13
+              description: >-
+                Renovate utilizes the underlying Istio for FIPS encryption in transit and leverages external encrypted Valkey or Redis key value store for storage.
+  back-matter:
+    resources:
+      - uuid: e2e7ec96-06a8-45dd-8ba7-796a32cb58ac
+        title: UDS Package Renovate
+        rlinks:
+          - href: https://github.com/defenseunicorns/uds-package-renovate
