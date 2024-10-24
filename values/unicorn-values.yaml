@@ -1,0 +1,17 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+image:
+  registry: cgr.dev
+  repository: du-uds-defenseunicorns/renovate
+  tag: 38.129.2
+
+renovate:
+  securityContext:
+    runAsUser: 65532
+    runAsGroup: 65532
+
+securityContext:
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
