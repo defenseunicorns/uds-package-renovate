@@ -29,7 +29,7 @@ components:
         valuesFiles:
           - values/upstream-values.yaml
     images:
-      - ghcr.io/renovatebot/renovate:38.107.0-full
+      - ghcr.io/renovatebot/renovate:38.130.3-full
 
   - name: renovate
     required: true
@@ -43,4 +43,4 @@ components:
         valuesFiles:
           - values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:38.107.0
+      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:38.130.2
