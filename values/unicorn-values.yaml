@@ -3,5 +3,15 @@
 
 image:
   registry: cgr.dev
-  repository: du-uds-defenseunicorns/renovate-fips
-  tag: 38.130.0
+  repository: du-uds-defenseunicorns/renovate
+  tag: 38.129.2
+
+renovate:
+  securityContext:
+    runAsUser: 65532
+    runAsGroup: 65532
+
+securityContext:
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
