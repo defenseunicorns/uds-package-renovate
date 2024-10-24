@@ -29,7 +29,7 @@ components:
         valuesFiles:
           - values/upstream-values.yaml
     images:
-      - ghcr.io/renovatebot/renovate:38.130.3-full
+      - ghcr.io/renovatebot/renovate:38.130.0-full
 
   - name: renovate
     required: true
@@ -43,4 +43,18 @@ components:
         valuesFiles:
           - values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:38.130.2
+      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:38.130.0
+
+  - name: renovate
+    required: true
+    description: "Deploy Renovate"
+    import:
+      path: common
+    only:
+      flavor: unicorn
+    charts:
+      - name: renovate
+        valuesFiles:
+          - values/unicorn-values.yaml
+    images:
+      - cgr.dev/du-uds-defenseunicorns/renovate-fips:38.130.0
