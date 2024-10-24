@@ -1,5 +1,20 @@
 # Changelog
 
+## [38.107.0-uds.2](https://github.com/defenseunicorns/uds-package-renovate/compare/v38.107.0-uds.1...v38.107.0-uds.2) (2024-10-24)
+
+
+### Features
+
+* allow configuring redis scheme ([#13](https://github.com/defenseunicorns/uds-package-renovate/issues/13)) ([f0a59b5](https://github.com/defenseunicorns/uds-package-renovate/commit/f0a59b584184e5b522f649791e12bd98f199d8e5))
+
+
+### Miscellaneous
+
+* **deps:** update renovate support dependencies ([9252c53](https://github.com/defenseunicorns/uds-package-renovate/commit/9252c536fb4eabd973acc0b8569724f129a512ff))
+* fix CODEOWNERS ([#10](https://github.com/defenseunicorns/uds-package-renovate/issues/10)) ([a7484be](https://github.com/defenseunicorns/uds-package-renovate/commit/a7484bec021fce63ff72ce7d15a4f73c318540f9))
+* setup renovate for the renovate package ([6c13a03](https://github.com/defenseunicorns/uds-package-renovate/commit/6c13a039e5dc8974860a77817f2095e16caa28cf))
+* silver badge, streamline README and GH permissions ([46867bf](https://github.com/defenseunicorns/uds-package-renovate/commit/46867bf445af33cb0fc6af83cf276be57dc7d5f3))
+
 ## [38.107.0-uds.1](https://github.com/defenseunicorns/uds-package-renovate/compare/v38.107.0-uds.0...v38.107.0-uds.1) (2024-10-04)
 
 
