@@ -2,16 +2,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 image:
-  registry: cgr.dev
-  repository: du-uds-defenseunicorns/renovate-fips
-  tag: 38.132.2
-
-renovate:
-  securityContext:
-    runAsUser: 65532
-    runAsGroup: 65532
-
-securityContext:
-  runAsUser: 65532
-  runAsGroup: 65532
-  fsGroup: 65532
+  registry: ghcr.io
+  repository: renovatebot/renovate
+  tag: 38.133.0-full
