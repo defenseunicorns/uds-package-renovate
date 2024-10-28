@@ -12,7 +12,7 @@ metadata:
 packages:
   - name: valkey
     repository: ghcr.io/defenseunicorns/packages/uds/valkey
-    ref: 7.2.6-uds.0-upstream
+    ref: 8.0.1-uds.0-upstream
     overrides:
       valkey:
         valkey:
