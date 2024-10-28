@@ -4,7 +4,7 @@
 image:
   registry: cgr.dev
   repository: du-uds-defenseunicorns/renovate-fips
-  tag: 38.131.2
+  tag: 38.132.2
 
 renovate:
   securityContext:
