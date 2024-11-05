@@ -1,5 +1,13 @@
 # Changelog
 
+## [39.0.3-uds.0](https://github.com/defenseunicorns/uds-package-renovate/compare/v38.133.0-uds.0...v39.0.3-uds.0) (2024-11-05)
+
+
+### Miscellaneous
+
+* **deps:** update renovate package dependencies to v39 (major) ([#26](https://github.com/defenseunicorns/uds-package-renovate/issues/26)) ([5a0ffb8](https://github.com/defenseunicorns/uds-package-renovate/commit/5a0ffb83934ad2eb073f8a8f4555b5a4d2da752a))
+* **deps:** update renovate support dependencies ([#20](https://github.com/defenseunicorns/uds-package-renovate/issues/20)) ([a8f1423](https://github.com/defenseunicorns/uds-package-renovate/commit/a8f14230eef8b19ae9319e375634a78bdf4008a9))
+
 ## [38.133.0-uds.0](https://github.com/defenseunicorns/uds-package-renovate/compare/v38.107.0-uds.1...v38.133.0-uds.0) (2024-10-28)
 
 
