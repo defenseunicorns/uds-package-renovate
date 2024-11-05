@@ -7,7 +7,7 @@ metadata:
   name: renovate
   description: "A deployment of Renovate, a bot for automated dependency updates."
   # x-release-please-start-version
-  version: "38.133.0-uds.0"
+  version: "39.0.3-uds.0"
   # x-release-please-end
 
 variables:
