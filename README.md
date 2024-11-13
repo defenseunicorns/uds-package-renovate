@@ -7,6 +7,8 @@
 
 This package is designed for use as part of a [UDS Software Factory](https://github.com/defenseunicorns/uds-software-factory) bundle deployed on [UDS Core](https://github.com/defenseunicorns/uds-core).
 
+> Renovate is an automation tool that streamlines the process of updating dependencies in software projects, automatically creating pull requests for newer versions of libraries and frameworks, ensuring that applications remain secure and up-to-date with the latest features and bug fixes.
+
 ## Optional Dependencies
 
 Renovate requires a version control system (like [`uds-package-gitlab`](https://github.com/defenseunicorns/uds-package-gitlab)) and can be configured to persist it's cache to a Redis/Valkey instance, either in cluster or external. 
