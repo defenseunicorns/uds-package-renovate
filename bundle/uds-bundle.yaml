@@ -12,7 +12,7 @@ metadata:
 packages:
   - name: valkey
     repository: ghcr.io/defenseunicorns/packages/uds/valkey
-    ref: 8.0.1-uds.0-upstream
+    ref: 8.0.1-uds.3-upstream
     overrides:
       valkey:
         valkey:
@@ -22,7 +22,7 @@ packages:
         uds-valkey-config:
           namespace: "valkey-renovate"
           values:
-            - path: custom
+            - path: additionalNetworkAllow
               value:
                 - direction: Ingress
                   selector:

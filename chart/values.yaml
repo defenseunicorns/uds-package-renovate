@@ -45,3 +45,5 @@ renovate:
     {
         "enabled": true
     }
+
+additionalNetworkAllow: []
