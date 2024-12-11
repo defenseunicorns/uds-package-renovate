@@ -1,5 +1,13 @@
 # Changelog
 
+## [39.0.3-uds.1](https://github.com/defenseunicorns/uds-package-renovate/compare/v39.0.3-uds.0...v39.0.3-uds.1) (2024-12-11)
+
+
+### Miscellaneous
+
+* **deps:** update support-deps to v1.3.0 ([#28](https://github.com/defenseunicorns/uds-package-renovate/issues/28)) ([83ebc01](https://github.com/defenseunicorns/uds-package-renovate/commit/83ebc01b458f2a1b44b0313eacf46a2d72a93806))
+* swap to additionalNetworkAllow from custom ([#31](https://github.com/defenseunicorns/uds-package-renovate/issues/31)) ([7a08a8c](https://github.com/defenseunicorns/uds-package-renovate/commit/7a08a8c3dff5e9d41dff116eba91e2a450633352))
+
 ## [39.0.3-uds.0](https://github.com/defenseunicorns/uds-package-renovate/compare/v38.133.0-uds.0...v39.0.3-uds.0) (2024-11-05)
 
 
