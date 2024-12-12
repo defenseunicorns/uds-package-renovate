@@ -83,7 +83,3 @@ tasks:
         if: ${{ ne .variables.ARCH "arm64" }}
       - description: Publish the package
         task: publish:package
-        with:
-          # x-release-please-start-version
-          version: "39.0.3-uds.0"
-          # x-release-please-end

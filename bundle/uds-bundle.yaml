@@ -5,9 +5,7 @@ kind: UDSBundle
 metadata:
   name: renovate-test
   description: A UDS bundle for deploying Renovate and it's dependencies on a development cluster
-  # x-release-please-start-version
-  version: 39.0.3-uds.0
-  # x-release-please-end
+  version: dev
 
 packages:
   - name: valkey
@@ -39,9 +37,7 @@ packages:
 
   - name: renovate
     path: ../
-    # x-release-please-start-version
-    ref: 39.0.3-uds.0
-    # x-release-please-end
+    ref: dev
     overrides:
       renovate:
         renovate:
