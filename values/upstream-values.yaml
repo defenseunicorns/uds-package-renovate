@@ -4,4 +4,4 @@
 image:
   registry: ghcr.io
   repository: renovatebot/renovate
-  tag: 39.0.3-full
+  tag: 39.65.0-full
