@@ -17,7 +17,7 @@ By default the schedule is every 15 minutes (`"*/15 * * * *"`).
 - `renovate.autodiscover` - Autodiscover repositories. Defaults to `true` which enables Renovate to run on all repositories that the bot account can access. See https://docs.renovatebot.com/self-hosted-configuration/#autodiscover
 - `renovate.onboarding` - Require a configuration PR to onboard new repositories to Renovate. Defaults to `true`. See https://docs.renovatebot.com/self-hosted-configuration/#onboarding
 - `renovate.extraEnv` - A map of key value pairs to pass extra environment variables to Renovate for custom configuration options. Any value listed in the [Renovate Self-Hosted configuration options](https://docs.renovatebot.com/self-hosted-configuration/) can be specified here using the `env` variable name from the docs. 
-- `renovate.config` - Renovate config.json file. The contents of this file will be combined with any settings or environment variables specified above. If `renovate.printconfig` is `true` the combined effective config will appear in the pod logs for each execution of Renovate.
+- `renovate.config` - Renovate `config.json` file represented in YAML (YAML keys are the same as those in the `config.json` and are converted toJson iby the template). The contents of this file will be combined with any settings or environment variables specified above. If `renovate.printconfig` is `true` the combined effective config will appear in the pod logs for each execution of Renovate.
 
 ## Redis
 
