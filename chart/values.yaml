@@ -41,9 +41,8 @@ renovate:
   # that aren't directly exposed by the uds-renovate-config chart. (see: https://docs.renovatebot.com/self-hosted-configuration/)
   extraEnv: {}
 
-  config: |
-    {
-        "enabled": true
-    }
+  config:
+    enabled: true
+
 
 additionalNetworkAllow: []
