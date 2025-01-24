@@ -7,6 +7,26 @@
       ":semanticCommits",
       ":semanticCommitTypeAll(chore)"
     ],
+    "ignorePaths": [
+      "**/node_modules/**",
+      "**/bower_components/**",
+      "**/vendor/**",
+      "**/examples/**",
+      "**/__tests__/**",
+      "**/test/**",
+      "**/tests/**",
+      "**/__fixtures__/**",
+      "**/repo-sources/**"
+    ],
+    "nuget": {
+      "ignorePaths": [
+        "**/node_modules/**",
+        "**/bower_components/**",
+        "**/vendor/**",
+        "**/examples/**",
+        "**/__fixtures__/**"
+      ]
+    },
     "packageRules": [
       {
         "groupName": "Renovate Support Dependencies",

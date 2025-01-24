@@ -68,7 +68,7 @@ test('upload multiple demo-repos', async () => {
     expect(issueFoundWithRenovateMaven).toBe(false);
     expect(issueFoundWithoutRenovateMaven).toBe(false);
 
-}, 120000);
+}, 150000);
 
 async function inviteRenovateBotToProject(headers: HeadersInit, projectId: any, token: string) {
     const userResp = await fetch(`https://gitlab${domainSuffix}/api/v4/users?username=${renovateUserName}`, { headers });
