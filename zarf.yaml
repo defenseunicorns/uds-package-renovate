@@ -7,6 +7,11 @@ metadata:
   name: renovate
   description: "A deployment of Renovate, a bot for automated dependency updates."
   version: "dev"
+  annotations:
+    title: Renovate
+    description: Renovate is an automated dependency update tool that helps keep dependencies up to date within your software projects. It checks for dependency updates in public or private repositories and then opens appropriate pull or merge requests to make those changes in your project.
+    categories: Software Dev,IT Management,Security
+    keywords: Dependency Management,Automated Updates,Security,Open Source
 
 variables:
   - name: DOMAIN
