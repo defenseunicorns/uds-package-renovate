@@ -1,44 +1,54 @@
 {
-    "enabled": true,
-    "forkProcessing": "enabled",
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-      "github>defenseunicorns/uds-common//config/renovate.json5",
-      ":semanticCommits",
-      ":semanticCommitTypeAll(chore)"
-    ],
+  "enabled": true,
+  "forkProcessing": "enabled",
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>defenseunicorns/uds-common//config/renovate.json5",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**",
+    "**/examples/**",
+    "**/__tests__/**",
+    "**/test/**",
+    "**/tests/**",
+    "**/__fixtures__/**",
+    "**/repo-sources/**"
+  ],
+  "nuget": {
     "ignorePaths": [
       "**/node_modules/**",
       "**/bower_components/**",
       "**/vendor/**",
       "**/examples/**",
-      "**/__tests__/**",
-      "**/test/**",
-      "**/tests/**",
-      "**/__fixtures__/**",
-      "**/repo-sources/**"
-    ],
-    "nuget": {
-      "ignorePaths": [
-        "**/node_modules/**",
-        "**/bower_components/**",
-        "**/vendor/**",
-        "**/examples/**",
-        "**/__fixtures__/**"
+      "**/__fixtures__/**"
+    ]
+  },
+  "packageRules": [
+    {
+      "groupName": "Renovate Support Dependencies",
+      "labels": [
+        "support-deps"
+      ],
+      "commitMessageTopic": "support-deps",
+      "matchPackageNames": [
+        "*"
       ]
     },
-    "packageRules": [
-      {
-        "groupName": "Renovate Support Dependencies",
-        "labels": ["support-deps"],
-        "commitMessageTopic": "support-deps",
-        "packagePatterns": ["*"]
-      },
-      {
-        "groupName": "Renovate Package Dependencies",
-        "labels": ["package-deps"],
-        "commitMessageTopic": "package-deps",
-        "matchDatasources": ["docker", "helm", "git-tags"]
-      }
-    ]
-  }
+    {
+      "groupName": "Renovate Package Dependencies",
+      "labels": [
+        "package-deps"
+      ],
+      "commitMessageTopic": "package-deps",
+      "matchDatasources": [
+        "docker",
+        "helm",
+        "git-tags"
+      ]
+    }
+  ]
+}
