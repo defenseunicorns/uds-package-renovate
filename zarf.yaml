@@ -31,7 +31,7 @@ components:
         valuesFiles:
           - values/upstream-values.yaml
     images:
-      - ghcr.io/renovatebot/renovate:39.188.0-full
+      - ghcr.io/renovatebot/renovate:39.194.1-full
   - name: renovate
     required: true
     description: "Deploy Renovate"
@@ -57,4 +57,4 @@ components:
         valuesFiles:
           - values/unicorn-values.yaml
     images:
-      - cgr.dev/du-uds-defenseunicorns/renovate-fips:39.185.0
+      - cgr.dev/du-uds-defenseunicorns/renovate-fips:39.191.4
