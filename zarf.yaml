@@ -34,7 +34,7 @@ components:
         valuesFiles:
           - values/upstream-values.yaml
     images:
-      - ghcr.io/renovatebot/renovate:39.259.0-full
+      - ghcr.io/renovatebot/renovate:39.264.0-full
 
   - name: renovate
     required: true
@@ -48,7 +48,7 @@ components:
         valuesFiles:
           - values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:39.238.1
+      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:39.264.0
 
   - name: renovate
     required: true
@@ -62,4 +62,4 @@ components:
         valuesFiles:
           - values/unicorn-values.yaml
     images:
-      - cgr.dev/du-uds-defenseunicorns/renovate-fips:39.258.0
+      - cgr.dev/du-uds-defenseunicorns/renovate-fips:39.261.0
