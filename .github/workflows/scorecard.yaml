@@ -18,6 +18,7 @@ jobs:
     permissions:
       actions: read
       attestations: read
+      models: read
       checks: read
       contents: read
       deployments: read
