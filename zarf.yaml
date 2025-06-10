@@ -62,4 +62,4 @@ components:
         valuesFiles:
           - values/unicorn-values.yaml
     images:
-      - cgr.dev/du-uds-defenseunicorns/renovate-fips:40.14.4
+      - registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate:40.22.0

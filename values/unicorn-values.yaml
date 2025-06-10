@@ -2,6 +2,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 image:
-  registry: cgr.dev
-  repository: du-uds-defenseunicorns/renovate-fips
-  tag: 40.14.4
+  registry: registry1.dso.mil
+  repository: ironbank/container-hardening-tools/renovate/renovate
+  tag: 40.22.0
