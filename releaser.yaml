@@ -4,10 +4,10 @@
 flavors:
   - name: upstream
     # renovate-uds: datasource=docker depName=ghcr.io/renovatebot/renovate extractVersion=^(?<version>\d+\.\d+\.\d+)(-full)?$
-    version: 40.49.5-uds.0
+    version: 40.61.0-uds.0
   - name: registry1
     # renovate-uds: datasource=docker depName=registry1.dso.mil/ironbank/container-hardening-tools/renovate/renovate
-    version: 40.48.5-uds.0
+    version: 40.60.2-uds.0
   - name: unicorn
     # renovate-uds: datasource=docker depName=cgr.dev/du-uds-defenseunicorns/renovate-fips
     version: 40.14.4-uds.0
