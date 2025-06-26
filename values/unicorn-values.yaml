@@ -4,4 +4,4 @@
 image:
   registry: registry1.dso.mil
   repository: ironbank/container-hardening-tools/renovate/renovate
-  tag: 40.60.2
+  tag: 41.10.0
