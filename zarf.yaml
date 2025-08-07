@@ -34,7 +34,7 @@ components:
         valuesFiles:
           - values/upstream-values.yaml
     images:
-      - ghcr.io/renovatebot/renovate:41.55.0-full
+      - ghcr.io/renovatebot/renovate:41.57.1-full
 
   - name: renovate
     required: true
